@@ -62,8 +62,10 @@ const login = async (req, res) => {
     console.log("login token: ", token);
     res.cookie("userToken", token, {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax", //None
+      // secure: false,
+      // sameSite: "lax", //None
+      secure: true, // ✅ must be true for HTTPS + cross-site
+      sameSite: "None", // ✅ required for cross-origin cookie
       maxAge: rememberme ? 24 * 60 * 60 * 1000 * 7 : undefined,
     });
 
@@ -77,8 +79,10 @@ const logout = async (req, res) => {
   // res.clearCookie("userToken");
   res.clearCookie("userToken", {
     httpOnly: true,
-    secure: false,
-    sameSite: "lax",
+    // secure: false,
+    // sameSite: "lax",
+    secure: true, // ✅ must be true for HTTPS + cross-site
+    sameSite: "None", // ✅ required for cross-origin cookie
   });
   res.json({ msg: "logout successfull" });
 };
@@ -138,8 +142,10 @@ const googleCallback = (req, res, next) => {
 
         res.cookie("userToken", token, {
           httpOnly: true,
-          secure: false,
-          sameSite: "lax",
+          // secure: false,
+          // sameSite: "lax",
+          secure: true, // ✅ must be true for HTTPS + cross-site
+          sameSite: "None", // ✅ required for cross-origin cookie
           maxAge: 7 * 24 * 60 * 60 * 1000,
         });
 
@@ -154,8 +160,10 @@ const googleCallback = (req, res, next) => {
 
       res.cookie("userToken", token, {
         httpOnly: true,
-        secure: false,
-        sameSite: "lax",
+        // secure: false,
+        // sameSite: "lax",
+        secure: true, // ✅ must be true for HTTPS + cross-site
+        sameSite: "None", // ✅ required for cross-origin cookie
         maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days remember me default for OAuth
       });
 
@@ -183,8 +191,10 @@ const resetPassword = async (req, res) => {
     // res.clearCookie("userToken");
     res.clearCookie("userToken", {
       httpOnly: true,
-      sameSite: "lax",
-      secure: false,
+      // sameSite: "lax",
+      // secure: false,
+      secure: true, // ✅ must be true for HTTPS + cross-site
+      sameSite: "None", // ✅ required for cross-origin cookie
     });
     res.status(200).json({ msg: "Password reset successful" });
   } catch (error) {
